@@ -1,5 +1,10 @@
 package code.artist.common.result;
 
+/**
+ * 响应对象
+ * 使用泛型
+ * @param <T>
+ */
 public class RestResponse<T> {
 
     private int code;

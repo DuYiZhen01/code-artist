@@ -10,6 +10,7 @@ const config = require('../config/global');
  */
 app.post('/toLogin', function(req, res) {
     var user = req.body;
+    // 访问后端接口  http://localhost:8080/user/login  数据 username  password
     request.post({ url: config.API_BASE_URL + '/user/login', form: { username: user.username, password: user.password } }, function(err, resp, body) {
         if (!err && resp.statusCode == 200) {
             var respJson = JSON.parse(body);

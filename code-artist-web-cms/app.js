@@ -1,14 +1,15 @@
-const express = require('express');
+const express = require('express');  // const  常量定义
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const path = require('path');
-const app = express();
+const path = require('path');  // 导入path包  类似java  import
+const app = express();  // 把函数赋值给app  可以通过app.来调用 express中的函数
 
 const user = require('./route/user');
 
+// 设置了某些信息
 app.use(session({
-    secret: '123456',
-    cookie: { maxAge: 60 * 1000 * 30 },
+    secret: '123456', 
+    cookie: { maxAge: 60 * 1000 * 30 }, 
     resave: false,
     saveUninitialized: true
 }));
