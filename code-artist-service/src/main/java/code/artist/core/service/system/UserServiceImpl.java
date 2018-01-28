@@ -41,6 +41,12 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public int updateUser(User admin) {
+        admin.setUpdateTime(new Date());
+        return userMapper.updEntityById(admin);
+    }
+
+    @Override
     public List<Menu> showMenu(String userId) {
         return menuMapper.selMenuByUserId(userId);
     }

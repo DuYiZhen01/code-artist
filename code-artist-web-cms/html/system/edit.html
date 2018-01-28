@@ -1,5 +1,5 @@
 <body>
-    <form id="newAdminForm" method="post">
+    <form id="editForm" method="post">
         <table class="formTable">
             <tr>
                 <td class="odd"><label for="username">用户名：</label></td>
@@ -18,20 +18,28 @@
                 <td class="even"><input class="easyui-validatebox" type="text" id="address" name="address" data-options="required:true" /></td>
             </tr>
             <tr>
+                <td class="odd"><label for="opassword">原始密码：</label></td>
+                <td class="even"><input class="easyui-validatebox" type="password" id="opassword" name="opassword" /></td>
+            </tr>
+            <tr>
                 <td class="odd"><label for="password">密　码：</label></td>
-                <td class="even"><input class="easyui-validatebox" type="password" id="password" name="password" data-options="required:true" /></td>
+                <td class="even"><input class="easyui-validatebox" type="password" id="password" name="password" /></td>
             </tr>
             <tr>
                 <td class="odd"><label for="passwordCheck">确认密码：</label></td>
-                <td class="even"><input class="easyui-validatebox" type="password" id="passwordCheck" required="required" validType="equals['#password']" /></td>
+                <td class="even"><input class="easyui-validatebox" type="password" id="passwordCheck" validType="equals['#password']" /></td>
             </tr>
-            <tr>
-                <td class="odd"><label for="isAdmin">管理员：</label></td>
-                <td class="even">
-                    <input type="radio" name="isAdmin" value="0" checked>否</input>
-                    <input type="radio" name="isAdmin" value="1">是</input>
-                </td>
-            </tr>
+            <input type="hidden" id="id" name="id">
         </table>
     </form>
+    <script>
+        $.post("/showLogin", function(user) {
+            $("#editForm").form('disableValidation');
+            $("#id").val(user.id);
+            $("#username").val(user.username);
+            $("#realname").val(user.realname);
+            $("#phone").val(user.phone);
+            $("#address").val(user.address);
+        });
+    </script>
 </body>

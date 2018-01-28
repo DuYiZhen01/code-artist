@@ -1,4 +1,8 @@
 $(function() {
+    $.post("/showLogin", function(user) {
+        $("#admin").html(user.realname);
+    });
+
     $.post("/user/showMenu", function(menu) {
         if (menu != 1) {
             var result = '<div class="easyui-accordion" style="height:100%;">';
@@ -16,6 +20,29 @@ $(function() {
         }
         $.parser.parse($('#menu'));
     });
+
+    $("#editMe").click(function() {
+        easyuiConfig.newDialog("editDialog", '修改个人信息', 280, 260, "/system/edit.html", function() {
+            $("#editForm").form('enableValidation');
+            if ($("#editForm").form('validate')) {
+                $.post("/toEdit", $("#editForm").serialize(), function(data) {
+                    if (data == "100") {
+                        $.messager.alert('系统提示', '原始密码密码错误！');
+                    } else if (data == "200") {
+                        location = "/exit";
+                    } else if (data != '') {
+                        $.messager.alert('系统提示', '管理员' + data + '保存成功！');
+                        $("#editDialog").dialog('close');
+                        $("#adminDatagrid").datagrid('reload');
+                    } else {
+                        $.messager.alert('系统提示', '管理员保存失败！');
+                        $("#editDialog").dialog('close');
+                    }
+                });
+            }
+        });
+    });
+
 });
 
 function addTab(title, url) {

@@ -37,6 +37,14 @@ public interface IUserService {
     int insertUser(User user);
 
     /**
+     * 更改管理员用户
+     *
+     * @param admin
+     * @return
+     */
+    int updateUser(User admin);
+
+    /**
      * 通过用户ID查询菜单列表
      *
      * @param userId 用户ID

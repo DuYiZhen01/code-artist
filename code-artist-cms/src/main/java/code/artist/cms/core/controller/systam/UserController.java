@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,6 +81,44 @@ public class UserController {
         int flag = userService.insertUser(user);
         if (flag == 1) {
             return new RestResponse<>(Constants.Http.SUCCESS_CODE, Constants.Http.SUCCESS_MESSAGE, user.getRealname());
+        } else {
+            return new RestResponse<>(Constants.Http.ERROR_CODE, Constants.Http.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * 修改管理员信息
+     *
+     * @param userJson  当前登录用户
+     * @param paramJson 修改参数
+     * @return 返回结果
+     */
+    @RequestMapping(value = "editUser", method = RequestMethod.POST)
+    public RestResponse editUser(String userJson, String paramJson) {
+        User operator = JSON.parseObject(userJson, User.class);
+        User admin = JSON.parseObject(paramJson, User.class);
+        if (admin == null || StringUtils.isEmpty(admin.getId())) {
+            return new RestResponse<>(Constants.Http.ERROR_CODE, Constants.Http.ERROR_MESSAGE);
+        }
+        admin.setUpdateUser(operator.getRealname());
+        int flag = userService.updateUser(admin);
+        if (flag == 1) {
+            return new RestResponse<>(Constants.Http.SUCCESS_CODE, Constants.Http.SUCCESS_MESSAGE, admin.getRealname());
+        } else {
+            return new RestResponse<>(Constants.Http.ERROR_CODE, Constants.Http.ERROR_MESSAGE);
+        }
+    }
+
+    @RequestMapping(value = "deleteUser/{id}", method = RequestMethod.POST)
+    public RestResponse deleteUser(String userJson, @PathVariable("id") String id) {
+        User loginUser = JSON.parseObject(userJson, User.class);
+        User user = new User();
+        user.setId(id);
+        user.setStatus(0);
+        user.setUpdateUser(loginUser.getRealname());
+        int flag = userService.updateUser(user);
+        if (flag == 1) {
+            return new RestResponse<>(Constants.Http.SUCCESS_CODE, Constants.Http.SUCCESS_MESSAGE, "删除成功！");
         } else {
             return new RestResponse<>(Constants.Http.ERROR_CODE, Constants.Http.ERROR_MESSAGE);
         }
