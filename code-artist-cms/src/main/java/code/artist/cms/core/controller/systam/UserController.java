@@ -2,8 +2,10 @@ package code.artist.cms.core.controller.systam;
 
 import code.artist.common.constants.Constants;
 import code.artist.common.result.RestResponse;
+import code.artist.core.facade.system.IRoleService;
 import code.artist.core.facade.system.IUserService;
 import code.artist.core.model.system.Menu;
+import code.artist.core.model.system.Role;
 import code.artist.core.model.system.User;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -31,6 +33,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IRoleService roleService;
 
     /**
      * 管理员登陆
@@ -142,4 +147,17 @@ public class UserController {
         }
     }
 
+    /**
+     * 查询所有的角色信息
+     * @return
+     */
+    @RequestMapping(value = "shoeRoleList", method = RequestMethod.POST)
+    public RestResponse showRoleList(){
+        List<Role> roleList = roleService.selectRoleList();
+        if (!CollectionUtils.isEmpty(roleList)) {
+            return new RestResponse<>(Constants.Http.SUCCESS_CODE, Constants.Http.SUCCESS_MESSAGE, roleList);
+        } else {
+            return new RestResponse<>(Constants.Http.ERROR_CODE, Constants.Http.ERROR_MESSAGE);
+        }
+    }
 }

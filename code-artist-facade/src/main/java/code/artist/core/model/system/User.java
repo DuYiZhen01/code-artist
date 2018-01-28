@@ -92,4 +92,5 @@ public class User extends BaseModel implements Serializable {
         this.status = status;
     }
 
+
 }
